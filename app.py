@@ -1,19 +1,16 @@
 import streamlit as st
 import pandas as pd
-from surprise import SVD, Dataset, Reader
+import pickle
 
 # Load cleaned data
 df = pd.read_csv("restaurant_reviews.csv")
 
-# Train SVD model
-reader = Reader(rating_scale=(0, 1))  # If your stars are normalized
-data = Dataset.load_from_df(df[['reviewerId', 'restaurant_name', 'stars']], reader)
-trainset = data.build_full_trainset()
-model = SVD()
-model.fit(trainset)
+# Load pretrained model
+with open('svd_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-# App interface
 st.title("🍽️ Recommandation de Restaurants en Mauritanie")
+
 user_id = st.text_input("Entrez votre ID utilisateur")
 
 if st.button("Recommander") and user_id in df['reviewerId'].values:
