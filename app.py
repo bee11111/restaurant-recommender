@@ -9,7 +9,7 @@ df = pd.read_csv("restaurant_reviews.csv")
 with open('svd_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
-st.title("🍽️ Recommandation de Restaurants en Mauritanie")
+st.title("Recommandation de Restaurants en Mauritanie")
 
 user_id = st.text_input("Entrez votre ID utilisateur")
 
@@ -20,7 +20,7 @@ if st.button("Recommander") and user_id in df['reviewerId'].values:
     preds = [(iid, model.predict(user_id, iid).est) for iid in not_rated]
     top_preds = sorted(preds, key=lambda x: x[1], reverse=True)[:5]
 
-    st.subheader("🍽️ Vos recommandations :")
+    st.subheader("Vos recommandations :")
     for name, score in top_preds:
         st.markdown(f"- **{name}** (score : {score:.2f})")
 elif user_id and user_id not in df['reviewerId'].values:
